@@ -1,17 +1,17 @@
 import random
 
-
 def lanzar_dados():
     return random.randint(1, 6), random.randint(1, 6)
 
 
 def obtener_combinacion_deseada():
-    combinacion_deseada = [(1, 2), (2, 1)]
+    combinacion_deseada = [(1, 2), (2, 1)] # meta
     resultados = []
     probabilidades = {}
     tiros_realizados = 0
+    buscando_solucion = True
 
-    while True:
+    while buscando_solucion:
         dado1, dado2 = lanzar_dados()
         resultado = (dado1, dado2)
 
@@ -24,7 +24,7 @@ def obtener_combinacion_deseada():
             probabilidades[resultado] = 1/36
 
         if resultado in combinacion_deseada:
-            break
+            buscando_solucion = False
 
     print("Resultados y sus probabilidades:")
     for resultado in resultados:
