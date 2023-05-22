@@ -3,9 +3,9 @@ import math
 
 class BusquedaAvara:
     def __init__(self):
-        self.estadoInicial = Nodo(3, 3, 0, 0, 1)
+        self.estadoInicial = Nodo(3, 3, 0, 0, 1) #misioneros izquierda, canibales izquierda, misioneros derecha, canibales derecha, bote izquierda
         self.arbol = [self.estadoInicial]
-        self.estadoVisitados = set()
+        self.estadoVisitados = set() # conjunto de nodos nuevos
         self.nodosGenerados = 0
 
     def solucion(self, estado):
@@ -54,15 +54,13 @@ class Nodo:
         self.padre = None
 
     def esValido(self):
-        if self.misionerosIzquierda < 0 or self.misionerosDerecha < 0 or self.canibalesIzquierda < 0 or self.canibalesDerecha < 0:
-            return False
-        if self.misionerosIzquierda > 3 or self.misionerosDerecha > 3 or self.canibalesIzquierda > 3 or self.canibalesDerecha > 3:
-            return False
-        if self.canibalesIzquierda > self.misionerosIzquierda and self.misionerosIzquierda > 0:
-            return False
-        if self.canibalesDerecha > self.misionerosDerecha and self.misionerosDerecha > 0:
-            return False
-        return True
+        if self.misionerosIzquierda >= 0 and self.misionerosDerecha >= 0 and self.canibalesIzquierda >= 0 and self.canibalesDerecha >= 0:
+            if self.misionerosIzquierda <= 3 and self.misionerosDerecha <= 3 and self.canibalesIzquierda <= 3 and self.canibalesDerecha <= 3:
+                if not (self.canibalesIzquierda > self.misionerosIzquierda and self.misionerosIzquierda > 0):
+                    if not (self.canibalesDerecha > self.misionerosDerecha and self.misionerosDerecha > 0):
+                        return True
+
+        return False
 
     def esMeta(self):
         return self.misionerosIzquierda == 0 and self.canibalesIzquierda == 0
@@ -71,27 +69,17 @@ class Nodo:
         estados = []
         #bote a la izquierda
         if self.posicionBarco == 1:
-            estados.append(Nodo(self.misionerosIzquierda - 1, self.canibalesIzquierda, self.misionerosDerecha + 1,
-                                    self.canibalesDerecha, 0))
-            estados.append(Nodo(self.misionerosIzquierda, self.canibalesIzquierda - 1, self.misionerosDerecha,
-                                    self.canibalesDerecha + 1, 0))
-            estados.append(Nodo(self.misionerosIzquierda - 1, self.canibalesIzquierda - 1, self.misionerosDerecha + 1,
-                                    self.canibalesDerecha + 1, 0))
-            estados.append(Nodo(self.misionerosIzquierda - 2, self.canibalesIzquierda, self.misionerosDerecha + 2,
-                                    self.canibalesDerecha, 0))
-            estados.append(Nodo(self.misionerosIzquierda, self.canibalesIzquierda - 2, self.misionerosDerecha,
-                                    self.canibalesDerecha + 2, 0))
+            estados.append(Nodo(self.misionerosIzquierda - 1, self.canibalesIzquierda, self.misionerosDerecha + 1, self.canibalesDerecha, 0))
+            estados.append(Nodo(self.misionerosIzquierda, self.canibalesIzquierda - 1, self.misionerosDerecha, self.canibalesDerecha + 1, 0))
+            estados.append(Nodo(self.misionerosIzquierda - 1, self.canibalesIzquierda - 1, self.misionerosDerecha + 1, self.canibalesDerecha + 1, 0))
+            estados.append(Nodo(self.misionerosIzquierda - 2, self.canibalesIzquierda, self.misionerosDerecha + 2, self.canibalesDerecha, 0))
+            estados.append(Nodo(self.misionerosIzquierda, self.canibalesIzquierda - 2, self.misionerosDerecha, self.canibalesDerecha + 2, 0))
         else:
-            estados.append(Nodo(self.misionerosIzquierda + 1, self.canibalesIzquierda, self.misionerosDerecha - 1,
-                                    self.canibalesDerecha, 1))
-            estados.append(Nodo(self.misionerosIzquierda, self.canibalesIzquierda + 1, self.misionerosDerecha,
-                                    self.canibalesDerecha - 1, 1))
-            estados.append(Nodo(self.misionerosIzquierda + 1, self.canibalesIzquierda + 1, self.misionerosDerecha - 1,
-                                    self.canibalesDerecha - 1, 1))
-            estados.append(Nodo(self.misionerosIzquierda + 2, self.canibalesIzquierda, self.misionerosDerecha - 2,
-                                    self.canibalesDerecha, 1))
-            estados.append(Nodo(self.misionerosIzquierda, self.canibalesIzquierda + 2, self.misionerosDerecha,
-                                    self.canibalesDerecha - 2, 1))
+            estados.append(Nodo(self.misionerosIzquierda + 1, self.canibalesIzquierda, self.misionerosDerecha - 1, self.canibalesDerecha, 1))
+            estados.append(Nodo(self.misionerosIzquierda, self.canibalesIzquierda + 1, self.misionerosDerecha, self.canibalesDerecha - 1, 1))
+            estados.append(Nodo(self.misionerosIzquierda + 1, self.canibalesIzquierda + 1, self.misionerosDerecha - 1, self.canibalesDerecha - 1, 1))
+            estados.append(Nodo(self.misionerosIzquierda + 2, self.canibalesIzquierda, self.misionerosDerecha - 2, self.canibalesDerecha, 1))
+            estados.append(Nodo(self.misionerosIzquierda, self.canibalesIzquierda + 2, self.misionerosDerecha, self.canibalesDerecha - 2, 1))
         return [estado for estado in estados if estado.esValido()] #operador ternario
 
     def __str__(self):

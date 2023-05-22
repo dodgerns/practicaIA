@@ -2,7 +2,7 @@ import timeit
 
 class Busqueda:
     def __init__(self):
-        self.raiz = Nodo(3, 3, 1)
+        self.raiz = Nodo(3, 3, 1) #misioneros izquierda, canibales izquierda, bote izquierda
         self.solucion = None
         self.nodosGenerados = 0
 
@@ -49,13 +49,11 @@ class Nodo:
         misionerosLadoDerecho = 3 - self.misionerosLadoIzq
         canibalesLadoDerecho = 3 - self.canibalesLadoIzq
 
-        if self.misionerosLadoIzq < 0 or self.misionerosLadoIzq > 3 or misionerosLadoDerecho < 0 or misionerosLadoDerecho > 3 or self.canibalesLadoIzq < 0 or self.canibalesLadoIzq > 3 or canibalesLadoDerecho < 0 or canibalesLadoDerecho > 3:
-            return False
-        
-        # Situación no deseada con los caníbales
-        if (self.misionerosLadoIzq > 0 and self.misionerosLadoIzq < self.canibalesLadoIzq) or (misionerosLadoDerecho > 0 and misionerosLadoDerecho < canibalesLadoDerecho):
-            return False
-        return True
+        if self.misionerosLadoIzq >= 0 and self.misionerosLadoIzq <= 3 and misionerosLadoDerecho >= 0 and misionerosLadoDerecho <= 3 and self.canibalesLadoIzq >= 0 and self.canibalesLadoIzq <= 3 and canibalesLadoDerecho >= 0 and canibalesLadoDerecho <= 3:
+            #condicion del problema de los misioneros y canibales
+            if not ((self.misionerosLadoIzq > 0 and self.misionerosLadoIzq < self.canibalesLadoIzq) or (misionerosLadoDerecho > 0 and misionerosLadoDerecho < canibalesLadoDerecho)):
+                return True
+        return False
 
     def esEstadoFinal(self):
         return self.misionerosLadoIzq == 0 and self.canibalesLadoIzq == 0 and self.posicionBote == 0
